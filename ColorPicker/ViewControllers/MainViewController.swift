@@ -10,10 +10,6 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    private var redColor: Float = 0.0
-    private var greenColor: Float = 0.0
-    private var blueColor: Float = 0.0
-    
     enum CurrentColor {
         case red, green, blue
     }
@@ -33,62 +29,50 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
 
         colorScreenView.layer.cornerRadius = 10
+
+        changeColorView(red: redLabel.value, green: greenLabel.value, blue: blueLabel.value)
         
-        redColor = redLabel.value
-        greenColor = greenLabel.value
-        blueColor = blueLabel.value
-        
-        changeColorView(red: redColor, green: greenColor, blue: blueColor)
+        showIndicatorValue(red: redLabel.value, green: greenLabel.value, blue: blueLabel.value)
     }
     
     // MARK: IB Actions
     @IBAction func redAction() {
-        changeColorAndValue(channelColor: .red, valueColor: redLabel.value)
+        changeColor()
     }
     
     @IBAction func greenAction() {
-        changeColorAndValue(channelColor: .green, valueColor: greenLabel.value)
+        changeColor()
     }
     
     @IBAction func blueAction() {
-        changeColorAndValue(channelColor: .blue, valueColor: blueLabel.value)
+        changeColor()
     }
     
 }
 
-
+// MARK: Add functional
 extension MainViewController {
     
     private func changeColorView(red: Float, green: Float, blue: Float) {
-        
+
         colorScreenView.backgroundColor = UIColor(displayP3Red: CGFloat(red),
                                                   green: CGFloat(green),
                                                   blue: CGFloat(blue),
                                                   alpha: 1.0)
-        
-        redIndicatorLabel.text = trimVariable(value: red)
-        greenIndicatorLabel.text = trimVariable(value: green)
-        blueIndicatorLabel.text = trimVariable(value: blue)
+
     }
-    
-    private func trimVariable(value: Float) -> String {
-        return String((value * 100).rounded() / 100)
+
+    private func showIndicatorValue(red: Float, green: Float, blue: Float) {
+        
+        redIndicatorLabel.text = "\((red * 100).rounded() / 100)"
+        greenIndicatorLabel.text = "\((green * 100).rounded() / 100)"
+        blueIndicatorLabel.text = "\((blue * 100).rounded() / 100)"
+        
     }
-    
-    private func changeColorAndValue(channelColor: CurrentColor, valueColor: Float) {
+
+    private func changeColor() {
         
-        switch channelColor {
-        case .red:
-            redColor = valueColor
-            break
-        case .green:
-            greenColor = valueColor
-            break
-        case .blue:
-            blueColor = valueColor
-            break
-        }
-        
-        changeColorView(red: redColor, green: greenColor, blue: blueColor)
+        changeColorView(red: redLabel.value, green: greenLabel.value, blue: blueLabel.value)
+        showIndicatorValue(red: redLabel.value, green: greenLabel.value, blue: blueLabel.value)
     }
 }
